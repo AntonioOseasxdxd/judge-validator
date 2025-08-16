@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Jueces</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e4e4e7;
+        }
+
+        .validator-container {
+            background: rgba(30, 30, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #d1d5db;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 250px;
+            padding: 16px;
+            background: rgba(17, 24, 39, 0.8);
+            border: 2px solid rgba(75, 85, 99, 0.5);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e4e4e7;
+            resize: vertical;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #60a5fa;
+            background: rgba(17, 24, 39, 1);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        textarea::placeholder {
+            color: #6b7280;
+        }
+
+        .validate-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 25px 0;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .validate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+        }
+
+        .validate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .result-good {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+            color: #4ade80;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
+        }
+
+        .result-error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+            color: #f87171;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .judge-name {
+            font-size: 16px;
+            margin-top: 12px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .info-text {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(17, 24, 39, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            line-height: 1.6;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .nav-link {
+            background: rgba(30, 30, 46, 0.9);
+            color: #60a5fa;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(96, 165, 250, 0.1);
+            border-color: #60a5fa;
+        }
+
+        .clear-btn {
+            background: rgba(75, 85, 99, 0.8);
+            color: #d1d5db;
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            float: right;
+            margin-top: 10px;
+        }
+
+        .clear-btn:hover {
+            background: rgba(75, 85, 99, 1);
+            border-color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navigation">
+        <a href="index.html" class="nav-link">📄 Calculadora de Tiempo</a>
+    </nav>
+
+    <div class="validator-container">
+        <h1>👨‍⚖️ Validador de Jueces</h1>
+        
+        <div class="input-group">
+            <label for="case-text">Información del caso:</label>
+            <textarea 
+                id="case-text" 
+                placeholder="Pega aquí la información del caso que contiene los datos del juez...&#10;&#10;Ejemplo:&#10;Removal&#10;Charging Doc. Date: 07/14/2022&#10;Alien Name: LEDESMA CABRERA, DAYSI&#10;Next Case Hearing: 12/15/2025 08:30 AM - 09:00 AM MASTER HEARING Ellison, John&#10;..."
+            ></textarea>
+            <button class="clear-btn" onclick="clearText()">🗑️ Limpiar</button>
+        </div>
+        
+        <button class="validate-btn" onclick="validateJudge()">🔍 Validar Juez</button>
+        
+        <div id="judge-result" class="result-container hidden">
+            <div id="judge-result-text"></div>
+            <div id="judge-name" class="judge-name"></div>
+        </div>
+        
+        <div class="info-text">
+            <strong>✅ Verde: PUEDES TRABAJARLO</strong> - Juez NO está en la lista bloqueada<br>
+            <strong>❌ Rojo: NO TRABAJAR REFUND</strong> - Juez SÍ está en la lista bloqueada
+        </div>
+    </div>
+
+    <script>
+        // Lista completa de jueces BLOQUEADOS (con los que NO se debe trabajar)
+        const blockedJudges = [
+            // Seattle
+            'JOHNSON', 'SHANE', 'TISOCCO', 'MICHAEL', 'WINDROW', 'FLUKE', 
+            'PARCHERT', 'REYES', 'SCALA',
+            // San Antonio  
+            'MARTINEZ',
+            // Generales
+            'BUTLER', 'CHEN', 'DINH', 'GAMBILL', 'GEORGE', 'SLAYTON', 
+            'STAR', 'SWINK', 'SIMS', 'NEWAZ', 'TIJERINA',
+            // Variaciones específicas
+            'SFR JOHNSON', 'SEATTLE JOHNSON',
+            'NEWAZ, RIFIAN S.', 'NEWAZ, RIFIAN', 'RIFIAN S. NEWAZ', 
+            'RIFIAN NEWAZ', 'RIFIAN S', 'RIFIAN'
+        ];
+
+        function validateJudge() {
+            const caseText = document.getElementById('case-text').value.trim();
+            const resultContainer = document.getElementById('judge-result');
+            const resultText = document.getElementById('judge-result-text');
+            const judgeNameElement = document.getElementById('judge-name');
+
+            if (!caseText) {
+                alert('Por favor, ingresa la información del caso.');
+                return;
+            }
+
+            // Buscar nombres de jueces en el texto
+            const foundJudges = extractAllJudgeNames(caseText);
+            const blockedJudgesFound = [];
+
+            // Verificar cada juez encontrado contra la lista de bloqueados
+            foundJudges.forEach(judge => {
+                if (isJudgeBlocked(judge)) {
+                    blockedJudgesFound.push(judge);
+                }
+            });
+
+            resultContainer.classList.remove('hidden', 'result-good', 'result-error');
+
+            if (blockedJudgesFound.length > 0) {
+                // Se encontró al menos un juez bloqueado
+                resultContainer.classList.add('result-error');
+                resultText.textContent = '❌ NO TRABAJAR REFUND';
+                judgeNameElement.textContent = `Juez(es) bloqueado(s): ${blockedJudgesFound.join(', ')}`;
+            } else {
+                // No se encontró ningún juez bloqueado - SOLO mostrar el mensaje verde
+                resultContainer.classList.add('result-good');
+                resultText.textContent = '✅ PUEDES TRABAJARLO';
+                judgeNameElement.textContent = ''; // Vacío - no mostrar nombres de jueces
+            }
+        }
+
+        function extractAllJudgeNames(text) {
+            const normalizedText = text.toUpperCase().trim();
+            const foundJudges = [];
+            
+            // Primero verificar si el texto contiene directamente algún juez bloqueado
+            blockedJudges.forEach(blockedJudge => {
+                if (normalizedText.includes(blockedJudge.toUpperCase())) {
+                    foundJudges.push(blockedJudge);
+                }
+            });
+            
+            // Si ya encontramos jueces bloqueados, devolver esos
+            if (foundJudges.length > 0) {
+                return foundJudges;
+            }
+            
+            // Buscar patrones más complejos solo si no encontramos coincidencias directas
+            const patterns = [
+                // Patrón más específico para MASTER HEARING seguido de nombre
+                /MASTER\s+HEARING\s+([A-Z][a-zA-Z]*(?:,\s*[A-Z][a-zA-Z]*)*(?:\s+[A-Z]\.?)*)/g,
+                // Patrón para nombres después de "IJ" o "Judge"
+                /(?:IJ|JUDGE)[:\s]+([A-Z][a-zA-Z]*(?:,\s*[A-Z][a-zA-Z]*)*(?:\s+[A-Z]\.?)*)/g,
+                // Patrón para apellido, nombre formato
+                /([A-Z][A-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)*)/g,
+                // Buscar nombres al final de líneas que contengan HEARING
+                /HEARING.*?([A-Z][a-zA-Z]+(?:,\s*[A-Z][a-zA-Z]*)*(?:\s+[A-Z]\.?)*)\s*$/gm
+            ];
+
+            patterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(normalizedText)) !== null) {
+                    if (match[1]) {
+                        let judgeName = match[1].trim();
+                        // Limpiar caracteres no deseados
+                        judgeName = judgeName.replace(/[^\w\s,.-]/g, '').trim();
+                        if (judgeName.length > 2 && judgeName.match(/[A-Z]/) && !foundJudges.includes(judgeName)) {
+                            foundJudges.push(judgeName);
+                        }
+                    }
+                }
+            });
+
+            // Búsqueda línea por línea para casos especiales
+            const lines = normalizedText.split('\n');
+            lines.forEach(line => {
+                if (line.includes('HEARING') && !line.includes('LOCATION')) {
+                    // Buscar nombres después de HEARING
+                    const hearingIndex = line.lastIndexOf('HEARING');
+                    if (hearingIndex !== -1) {
+                        const afterHearing = line.substring(hearingIndex + 7).trim();
+                        const words = afterHearing.split(/\s+/);
+                        
+                        // Buscar combinaciones de nombres
+                        for (let i = 0; i < words.length; i++) {
+                            if (words[i].match(/^[A-Z][A-Z]*$/)) {
+                                let potential = words[i];
+                                // Si hay una coma, tomar también la siguiente palabra
+                                if (words[i].includes(',') && i + 1 < words.length) {
+                                    potential += ' ' + words[i + 1];
+                                } else if (i + 1 < words.length && words[i + 1].includes(',')) {
+                                    potential += ' ' + words[i + 1];
+                                }
+                                if (potential.length > 2 && !foundJudges.includes(potential.trim())) {
+                                    foundJudges.push(potential.trim());
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            return foundJudges;
+        }
+
+        function isJudgeBlocked(judgeName) {
+            const normalizedName = judgeName.toUpperCase().trim();
+            
+            return blockedJudges.some(blocked => {
+                const normalizedBlocked = blocked.toUpperCase().trim();
+                
+                // Verificar coincidencias exactas
+                if (normalizedName === normalizedBlocked) return true;
+                
+                // Verificar si el nombre contiene el apellido del juez bloqueado
+                if (normalizedName.includes(normalizedBlocked)) return true;
+                
+                // Verificar si el juez bloqueado está contenido en el nombre encontrado
+                if (normalizedBlocked.includes(normalizedName)) return true;
+                
+                // Verificar solo apellidos (palabra antes de la coma o primera palabra)
+                const nameFirstPart = normalizedName.split(/[,\s]/)[0];
+                const blockedFirstPart = normalizedBlocked.split(/[,\s]/)[0];
+                if (nameFirstPart === blockedFirstPart && nameFirstPart.length > 2) return true;
+                
+                return false;
+            });
+        }
+
+        function clearText() {
+            document.getElementById('case-text').value = '';
+            document.getElementById('judge-result').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
