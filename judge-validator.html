@@ -272,7 +272,7 @@
                 // Se encontró al menos un juez bloqueado
                 resultContainer.classList.add('result-error');
                 resultText.textContent = '❌ NO TRABAJAR REFUND';
-                judgeNameElement.textContent = `Juez(es) bloqueado(s): ${blockedJudgesFound.join(', ')}`;
+                judgeNameElement.textContent = `Juez bloqueado: ${blockedJudgesFound.join(', ')}`;
             } else {
                 // No se encontró ningún juez bloqueado - SOLO mostrar el mensaje verde
                 resultContainer.classList.add('result-good');
