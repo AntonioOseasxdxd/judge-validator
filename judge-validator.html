@@ -156,6 +156,36 @@
             line-height: 1.6;
         }
 
+        .blocked-judges {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(17, 24, 39, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            text-align: left;
+        }
+
+        .blocked-judges h3 {
+            color: #f87171;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .judges-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            font-size: 13px;
+            color: #d1d5db;
+        }
+
+        .judge-item {
+            background: rgba(239, 68, 68, 0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
         .navigation {
             position: fixed;
             top: 20px;
@@ -199,7 +229,7 @@
 </head>
 <body>
     <nav class="navigation">
-        <a href="index.html" class="nav-link">📄 Calculadora de Tiempo</a>
+        <a href="time-calculator.html" class="nav-link">📄 Calculadora de Tiempo</a>
     </nav>
 
     <div class="validator-container">
@@ -209,7 +239,7 @@
             <label for="case-text">Información del caso:</label>
             <textarea 
                 id="case-text" 
-                placeholder="Pega aquí la información del caso que contiene los datos del juez...&#10;&#10;Ejemplo:&#10;Removal&#10;Charging Doc. Date: 07/14/2022&#10;Alien Name: LEDESMA CABRERA, DAYSI&#10;Next Case Hearing: 12/15/2025 08:30 AM - 09:00 AM MASTER HEARING Ellison, John&#10;..."
+                placeholder="Pega aquí la información del caso que contiene los datos del juez...&#10;&#10;Ejemplo:&#10;Removal&#10;Charging Doc. Date: 07/14/2022&#10;Alien Name: LEDESMA CABRERA, DAYSI&#10;Next Case Hearing: 12/15/2025 08:30 AM - 09:00 AM MASTER HEARING Newaz, Rifian S.&#10;..."
             ></textarea>
             <button class="clear-btn" onclick="clearText()">🗑️ Limpiar</button>
         </div>
@@ -222,60 +252,55 @@
         </div>
         
         <div class="info-text">
-            <strong>✅ Verde: PUEDES TRABAJARLO</strong> - Juez NO está en la lista bloqueada<br>
-            <strong>❌ Rojo: NO TRABAJAR REFUND</strong> - Juez SÍ está en la lista bloqueada
+            <strong>✅ Verde: TODO BIEN</strong> - Juez válido para trabajar<br>
+            <strong>❌ Rojo: NO TRABAJAR ESTE CASO REFUND</strong> - Juez en lista bloqueada
+        </div>
+
+        <div class="blocked-judges">
+            <h3>🚫 Jueces Bloqueados:</h3>
+            <div class="judges-list">
+                <div class="judge-item"><strong>Lista Actualizada:</strong></div>
+                <div class="judge-item">Chen</div>
+                <div class="judge-item">George</div>
+                <div class="judge-item">Slayton</div>
+                <div class="judge-item">Swink</div>
+                <div class="judge-item">SFR Johnson</div>
+                <div class="judge-item">Star</div>
+                <div class="judge-item">Parchert</div>
+                <div class="judge-item">Seattle Johnson</div>
+                <div class="judge-item">Tisocco</div>
+                <div class="judge-item">Windrow</div>
+                <div class="judge-item">Sims</div>
+                <div class="judge-item">Newaz</div>
+                <div class="judge-item">Tijerina</div>
+                <div class="judge-item"><strong>Anteriores mantenidos:</strong></div>
+                <div class="judge-item">Shane</div>
+                <div class="judge-item">Michael</div>
+                <div class="judge-item">Fluke</div>
+                <div class="judge-item">Reyes</div>
+                <div class="judge-item">Scala</div>
+                <div class="judge-item">Martinez</div>
+                <div class="judge-item">Butler</div>
+                <div class="judge-item">Dinh</div>
+                <div class="judge-item">Gambill</div>
+            </div>
         </div>
     </div>
 
     <script>
-         // Lista de jueces BLOQUEADOS - con nombres completos cuando están disponibles
+        // Lista completa de jueces con los que NO se debe trabajar
         const blockedJudges = [
-            // Jueces con nombres completos (formato: "Apellido, Nombre")
-            'SCALA, THERESA',
-            'TIJERINA, ERIC J.',
-            'MARTINEZ, ELIZABETH',
-            'SIMS, DEITRICH H.',
-            'JOHNSON, JEREMIAH',
-            'JOHNSON, SHANE',
-            'JOHNSON, SHANE E.',
-            'CHEN, SHUTING',
-            'TISOCCO, MICHAEL',
-            'WINDROW, HAYDEN E.',
-            'PARCHERT, BRETT M.',
-            'BUTLER, JEREMY J.',
-            'DINH, ROGER H.',
-            'GAMBILL, SCOTT D.',
-            'GEORGE, AMBER D',
-            'SLAYTON, MICHELLE A.',
-            'STAR, SHADEE M.',
-            'SWINK, ARWEN A.',
-            'SIMS, DEITRICH H.',
-            'NEWAZ, RIFIAN S.',
-            
-            // Jueces sin nombre completo aún (solo apellidos)
-            'FLUKE',
-            'REYES',
-            'SCALA',
+            // Seattle
+            'JOHNSON', 'SHANE', 'TISOCCO', 'MICHAEL', 'WINDROW', 'FLUKE', 
+            'PARCHERT', 'REYES', 'SCALA',
+            // San Antonio
             'MARTINEZ',
-            'BUTLER',
-            'CHEN',
-            'DINH',
-            'GAMBILL',
-            'GEORGE',
-            'SLAYTON',
-            'STAR',
-            'SWINK',
-            'SIMS',
-            'NEWAZ',
-            'TIJERINA',
-            'TISOCCO',
-            'WINDROW',
-            'PARCHERT',
-            'JOHNSON',
-            
-            // Variaciones adicionales para casos especiales
-            'SFR JOHNSON', 
-            'SEATTLE JOHNSON'
+            // Generales
+            'BUTLER', 'CHEN', 'DINH', 'GAMBILL', 'GEORGE', 'SLAYTON', 
+            'STAR', 'SWINK', 'SIMS', 'NEWAZ', 'TIJERINA',
+            // Variaciones comunes
+            'NEWAZ, RIFIAN S.', 'NEWAZ, RIFIAN', 'RIFIAN S. NEWAZ', 
+            'RIFIAN NEWAZ', 'RIFIAN S', 'RIFIAN'
         ];
 
         function validateJudge() {
@@ -289,121 +314,91 @@
                 return;
             }
 
-            // Buscar nombres de jueces en el texto
-            const foundJudges = extractJudgeNames(caseText);
-            const blockedJudgesFound = [];
-
-            // Verificar cada juez encontrado contra la lista de bloqueados
-            foundJudges.forEach(judge => {
-                if (isJudgeBlocked(judge)) {
-                    blockedJudgesFound.push(judge);
-                }
-            });
-
-            resultContainer.classList.remove('hidden', 'result-good', 'result-error');
-
-            if (blockedJudgesFound.length > 0) {
-                // Se encontró al menos un juez bloqueado
+            // Buscar el nombre del juez en el texto
+            const foundJudge = extractJudgeName(caseText);
+            
+            if (!foundJudge) {
+                resultContainer.classList.remove('hidden', 'result-good', 'result-error');
                 resultContainer.classList.add('result-error');
-                resultText.textContent = '❌ NO TRABAJAR REFUND';
-                judgeNameElement.textContent = `Juez bloqueado: ${blockedJudgesFound.join(', ')}`;
-            } else {
-                // No se encontró ningún juez bloqueado
-                resultContainer.classList.add('result-good');
-                resultText.textContent = '✅ PUEDES TRABAJARLO';
-                judgeNameElement.textContent = '';
+                resultText.textContent = '❌ NO SE ENCONTRÓ JUEZ';
+                judgeNameElement.textContent = 'No se pudo identificar el nombre del juez en el texto.';
+                return;
             }
+
+            // Verificar si el juez está en la lista bloqueada
+            const isBlocked = isJudgeBlocked(foundJudge);
+            
+            resultContainer.classList.remove('hidden', 'result-good', 'result-error');
+            
+            if (isBlocked) {
+                resultContainer.classList.add('result-error');
+                resultText.textContent = '❌ NO TRABAJAR ESTE CASO REFUND';
+            } else {
+                resultContainer.classList.add('result-good');
+                resultText.textContent = '✅ TODO BIEN';
+            }
+
+            judgeNameElement.textContent = `Juez encontrado: ${foundJudge}`;
         }
 
-        function extractJudgeNames(text) {
+        function extractJudgeName(text) {
+            // Normalizar el texto
             const normalizedText = text.toUpperCase();
-            const foundJudges = [];
             
-            // Patrones mejorados para identificar nombres de jueces
+            // Buscar patrones comunes para nombres de jueces
             const patterns = [
-                // Patrón principal: MASTER HEARING seguido de apellido, nombre
-                /MASTER\s+HEARING\s+([A-Z][a-zA-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)?)/g,
-                // Patrón alternativo: HEARING seguido de apellido, nombre al final de línea
-                /HEARING\s+([A-Z][a-zA-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)?)\s*$/gm,
-                // Patrón para IJ o Judge seguido de nombre
-                /(?:IJ|JUDGE)[:\s]+([A-Z][a-zA-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)?)/g,
-                // Patrón general para formato Apellido, Nombre
-                /\b([A-Z][A-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)?)\b/g
+                // Patrón más específico para MASTER HEARING seguido de nombre
+                /MASTER\s+HEARING\s+([A-Z][a-zA-Z]*(?:,\s*[A-Z][a-zA-Z]*)*(?:\s+[A-Z]\.?)*)/,
+                // Patrón para nombres después de "IJ" o "Judge"
+                /(?:IJ|JUDGE)[:\s]+([A-Z][a-zA-Z]*(?:,\s*[A-Z][a-zA-Z]*)*(?:\s+[A-Z]\.?)*)/,
+                // Patrón para apellido, nombre formato
+                /([A-Z][A-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)*)/,
+                // Buscar nombres al final de líneas que contengan HEARING
+                /HEARING.*?([A-Z][a-zA-Z]+(?:,\s*[A-Z][a-zA-Z]*)*(?:\s+[A-Z]\.?)*)\s*$/m
             ];
 
-            patterns.forEach(pattern => {
-                let match;
-                while ((match = pattern.exec(normalizedText)) !== null) {
-                    if (match[1]) {
-                        let judgeName = match[1].trim();
-                        // Limpiar caracteres no deseados
-                        judgeName = judgeName.replace(/[^\w\s,.-]/g, '').trim();
-                        
-                        // Validar que es un nombre de juez válido
-                        if (isValidJudgeName(judgeName) && !foundJudges.includes(judgeName)) {
-                            foundJudges.push(judgeName);
-                        }
+            for (const pattern of patterns) {
+                const match = normalizedText.match(pattern);
+                if (match && match[1]) {
+                    let judgeName = match[1].trim();
+                    // Limpiar caracteres no deseados
+                    judgeName = judgeName.replace(/[^\w\s,.-]/g, '').trim();
+                    if (judgeName.length > 2 && judgeName.match(/[A-Z]/)) {
+                        return judgeName;
                     }
                 }
-            });
+            }
 
-            // Búsqueda específica en contexto de HEARING
+            // Búsqueda línea por línea para casos especiales
             const lines = normalizedText.split('\n');
-            lines.forEach(line => {
-                if (line.includes('HEARING') && !line.includes('LOCATION') && !line.includes('ALIEN NAME')) {
-                    // Buscar patrones de nombres después de HEARING
-                    const hearingMatch = line.match(/HEARING\s+(.+)$/);
-                    if (hearingMatch) {
-                        const afterHearing = hearingMatch[1].trim();
+            for (const line of lines) {
+                if (line.includes('HEARING') && !line.includes('LOCATION')) {
+                    // Buscar nombres después de HEARING
+                    const hearingIndex = line.lastIndexOf('HEARING');
+                    if (hearingIndex !== -1) {
+                        const afterHearing = line.substring(hearingIndex + 7).trim();
+                        const words = afterHearing.split(/\s+/);
                         
-                        // Buscar formato Apellido, Nombre
-                        const nameMatch = afterHearing.match(/([A-Z][a-zA-Z]+,\s*[A-Z][a-zA-Z]*(?:\s+[A-Z]\.?)?)/);
-                        if (nameMatch && isValidJudgeName(nameMatch[1])) {
-                            const judgeName = nameMatch[1].trim();
-                            if (!foundJudges.includes(judgeName)) {
-                                foundJudges.push(judgeName);
+                        // Buscar combinaciones de nombres
+                        for (let i = 0; i < words.length; i++) {
+                            if (words[i].match(/^[A-Z][A-Z]*$/)) {
+                                let potential = words[i];
+                                // Si hay una coma, tomar también la siguiente palabra
+                                if (words[i].includes(',') && i + 1 < words.length) {
+                                    potential += ' ' + words[i + 1];
+                                } else if (i + 1 < words.length && words[i + 1].includes(',')) {
+                                    potential += ' ' + words[i + 1];
+                                }
+                                if (potential.length > 2) {
+                                    return potential.trim();
+                                }
                             }
                         }
                     }
                 }
-            });
-
-            return foundJudges;
-        }
-
-        function isValidJudgeName(name) {
-            // Validar que el nombre tiene el formato correcto para ser un juez
-            if (!name || name.length < 3) return false;
-            
-            // Debe tener formato "Apellido, Nombre" o solo apellido
-            const hasCommaFormat = name.includes(',');
-            
-            // Si tiene coma, validar formato completo
-            if (hasCommaFormat) {
-                const parts = name.split(',').map(p => p.trim());
-                if (parts.length !== 2 || parts[0].length < 2 || parts[1].length < 1) {
-                    return false;
-                }
-                
-                // El apellido debe ser principalmente mayúsculas
-                if (!parts[0].match(/^[A-Z][A-Z]+$/)) {
-                    return false;
-                }
-                
-                // El nombre debe empezar con mayúscula
-                if (!parts[1].match(/^[A-Z]/)) {
-                    return false;
-                }
             }
-            
-            // Excluir nombres que claramente son de clientes (tienen patrones específicos)
-            const excludePatterns = [
-                /\b(ALIEN|CLIENT|RESPONDENT|PETITIONER)\b/,
-                /\b[A-Z]+-[A-Z]+\b/, // Nombres con guión como MARTINEZ-PESQUERA
-                /\b[A-Z]{3,}\s+[A-Z]{3,}\s+[A-Z]{3,}\b/ // Tres palabras todas en mayúsculas
-            ];
-            
-            return !excludePatterns.some(pattern => pattern.test(name));
+
+            return null;
         }
 
         function isJudgeBlocked(judgeName) {
@@ -412,28 +407,21 @@
             return blockedJudges.some(blocked => {
                 const normalizedBlocked = blocked.toUpperCase().trim();
                 
-                // Para jueces con nombre completo (formato "Apellido, Nombre")
-                if (normalizedBlocked.includes(',')) {
-                    // Coincidencia exacta del nombre completo
-                    if (normalizedName === normalizedBlocked) return true;
-                    
-                    // Coincidencia parcial si el texto contiene el nombre completo
-                    if (normalizedName.includes(normalizedBlocked)) return true;
-                    
-                    return false;
-                }
+                // Verificar coincidencias exactas
+                if (normalizedName === normalizedBlocked) return true;
                 
-                // Para jueces con solo apellido
-                else {
-                    // Si el nombre encontrado tiene formato completo, comparar solo el apellido
-                    if (normalizedName.includes(',')) {
-                        const lastName = normalizedName.split(',')[0].trim();
-                        return lastName === normalizedBlocked;
-                    }
-                    
-                    // Si ambos son solo apellidos, comparación directa
-                    return normalizedName === normalizedBlocked;
-                }
+                // Verificar si el nombre contiene el apellido del juez bloqueado
+                if (normalizedName.includes(normalizedBlocked)) return true;
+                
+                // Verificar si el juez bloqueado está contenido en el nombre encontrado
+                if (normalizedBlocked.includes(normalizedName)) return true;
+                
+                // Verificar solo apellidos (palabra antes de la coma o primera palabra)
+                const nameFirstPart = normalizedName.split(/[,\s]/)[0];
+                const blockedFirstPart = normalizedBlocked.split(/[,\s]/)[0];
+                if (nameFirstPart === blockedFirstPart && nameFirstPart.length > 2) return true;
+                
+                return false;
             });
         }
 
